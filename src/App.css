@@ -1,0 +1,144 @@
+.body{
+	box-sizing: border-box;
+}
+.App {
+	margin: 1rem;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.button1{
+	width: 80px;
+	height: 40px;
+}
+.search label{
+	font-size: 10px;
+	margin: 80px 20px 0px 0px;
+
+
+}
+.searchText{
+	width: 100% !important;
+}
+.card{
+	elevation:3px;
+
+}
+.column {
+	float: left;
+	width: 25%;
+	padding: 10px;
+	height: 200px; 
+}
+
+.card{
+	background-color: #f4f5f7!important;
+}
+
+.shadowDesc{
+	border-left: 2px solid orange;
+}
+.shadowText{
+	background-color: #f4f5f7!important;
+
+}.fonts{
+	font-size: 13px;
+}
+.timeText{
+	font-size: 15px;
+}
+.icon{
+	font-size: 20px;
+	color: blue;
+}
+.dot {
+	height: 20px;
+	width: 20px;
+	margin-left: 15px;
+	background-color: purple;
+	border-radius: 50%;
+	display: inline-block;
+}
+.smallText{
+	font-size: 10px;
+}
+
+
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+.modal-dialog{
+
+	display: inline-block;
+	height: auto;
+	float: right;
+	width: 60%;
+	max-width: 60%;
+}
+.modal-title{
+	font-weight: 300;
+	margin-bottom: 0;
+	line-height: 1.5;
+	font-size: 25px;
+	text-align: center;
+}
+.modal-header .close {
+	padding: 1rem 1rem;
+	margin: -1rem -1rem -1rem auto;
+	font-size: 46px;
+}
+.donContent {
+    margin: 0px 7px 3px 14px;
+    font-size: 17px;
+}
+.task{
+	margin: 30px;
+	font-size: 17px;
+	text-align: justify;
+}
+.box{
+	margin: 10px !important;
+	margin-left: 20px !important;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    padding: 5px;
+}
+.btn{
+	
+	border-radius: 2px;
+    border: 0;
+    color: #fff !important;
+    margin: 2px;
+    white-space: normal !important;
+    word-wrap: break-word;
+    text-transform: uppercase;
+    padding: 15px !important;
+
+}
+.btn-default{
+	 background: #372e5f !important;
+}
+.edit{
+	float: right;
+}
+.buttonRow{
+	width: 100% !important;
+}
+.modal-footer{
+	float: left !important;
+	justify-content: flex-start !important;
+	display: block !important;
+	text-align: left !important;
+}
+
+.ck.ck-reset.ck-editor.ck-rounded-corners {
+    width: 100% !important;
+    margin: 20px;
+   
+}
+.ck-editor__editable {
+    min-height: 200px;
+}
+.addcomment{
+	margin-left: 20px;
+}
