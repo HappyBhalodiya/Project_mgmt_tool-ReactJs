@@ -17,6 +17,7 @@ import Modal from 'react-awesome-modal';
 
 
 
+
 export default class MainScreen extends  Component{
       constructor(props) {
             super(props);
@@ -26,27 +27,27 @@ export default class MainScreen extends  Component{
             this.state = { value1: 'select'};
             this.state = { value2: 'select'};
             this.state = { value3: 'select'};
+            this.state = {   data: [] };
+            // this.state = { todo: '', 
+            //                progress: '',
+            //                test: '',
+            //                done :''
+            //               }
 
       }
       onChange(e) {
             this.setState({
                   value1: e.target.value1,
-
-
             })
       }
       onChange2(e) {
             this.setState({
                   value2: e.target.value2,
-
-
             })
       }
-       onChange3(e) {
+      onChange3(e) {
             this.setState({
                   value3: e.target.value3,
-
-
             })
       }
 
@@ -63,24 +64,96 @@ export default class MainScreen extends  Component{
       }
 
 
-
-
       allowDrop(ev) {
             ev.preventDefault();
       }
       drag(ev) {
             ev.dataTransfer.setData("text", ev.target.id);
+
+
       }
 
       drop(ev) {
             ev.preventDefault();
-            var data = ev.dataTransfer.getData("text");
-            ev.target.appendChild(document.getElementById(data));
+            var dataDrop = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(dataDrop));
+            console.log("dataDrop====>",dataDrop);
+            
+
       }
+
+      componentDidMount(){
+            fetch('http://206.189.231.135:4000/tasks/all-task').
+            then((Response)=>Response.json()).
+            then((findresponse,err)=>
+            {
+                  console.log("hii",findresponse[2].status)
+                  // if(status=="to do"){
+                  //      {this.show()}
+                        
+                  // }
+                  // else if(status == "in prgress"){
+                  //       {this.progress()}
+                       
+                  // }
+                  // else if(status == "testing"){
+                  //       {this.testing()}
+                  // }
+                  // else{
+                  // }
+                       this.setState({
+                        data:findresponse,
+                  }) 
+
+                  
+            })
+
+      }
+      show(){
+            return(
+               
+
+                  this.state.data.map((dynamcData,key)=>
+
+            // if(dynamcData.status=="to do"){
+            //       {this.show()}
+            // }
+            // else if(dynamcData.status=="in progress"){
+            //       {this.show()}
+            // }
+            // else{
+            //       {
+            //            this.show();
+            //       }
+            // }
+                        <div data-toggle="modal" data-target="#myModal" className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
+                        id={dynamcData._id}
+                        draggable="true" onDragStart={(event)=>this.drag(event)}> 
+
+
+                        <div className="fonts">
+                        <b>{dynamcData.title}</b>
+                        <p>{dynamcData.desc}</p>
+                        <span className="glyphicon glyphicon-ok-sign icon"></span>
+                        <span className="dot"></span>
+                        <p className="smallText">pmt-2</p>
+                        <p>{dynamcData.status}</p>
+                        <p>{dynamcData._id}</p>
+
+                        </div>
+                        </div>
+                        )
+                  )
+
+      }
+    
 
       render() {
 
             return (
+
+                  <div>
+
                   <div className="body">
                   <MuiThemeProvider>
                   <div className="container">
@@ -92,156 +165,61 @@ export default class MainScreen extends  Component{
 
                   </div>
 
-
-
                   <div className="row">
+
 
                   <div className="column" id="div11" 
                   onDrop={(event)=>this.drop(event)} 
-                  onDragOver={(event)=>this.allowDrop(event)}>
-
+                  onDragOver={(event)=>this.allowDrop(event)}> 
                   <div className="shadow">
                   <div className="shadow p-3 mb-3 text-black shadowText">
                   <div>TODO </div>  
                   </div>
-                  <div data-toggle="modal" data-target="#myModal" className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
-                  id="div12" 
-
-                  draggable="true" onDragStart={(event)=>this.drag(event)}>
-
-                  <div className="fonts"><b>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</b>
-                  <p>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</p>
-
-                  <span className="glyphicon glyphicon-ok-sign icon" ></span>
-                  <span className="dot"></span>
-                  <p className="smallText">pmt-2</p>
-
+                  {this.show()}
                   </div>
                   </div>
 
-                  <div data-toggle="modal" data-target="#myModal" className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
-                  id="div13" 
-
-                  draggable="true" onDragStart={(event)=>this.drag(event)}>
-
-                  <div className="fonts"><b>Push Notification system for chrome must be implemented for Project Management Tool.</b>
-                  <p>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</p>
-
-                  <span className="glyphicon glyphicon-ok-sign icon" ></span>
-                  <span className="dot"></span>
-                  <p className="smallText">pmt-2</p>
-
-                  </div>
-                  </div>
-
-                  </div>
-                  </div>
 
                   <div className="column" id="div2" onDrop={(event)=>this.drop(event)} onDragOver={(event)=>this.allowDrop(event)}>
                   <div className="shadow">
                   <div className="shadow p-3 mb-3   text-black shadowText">
-                  <div>IN PROGRESS </div>  
-                  </div>
-                  <div data-toggle="modal" data-target="#myModal" className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
-                  id="div3" 
+                    <div>IN PROGRESS </div>  
+                  
 
-                  draggable="true" onDragStart={(event)=>this.drag(event)}>
-
-                  <div className="fonts"><b>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</b>
-                  <p>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</p>
-
-                  <span className="glyphicon glyphicon-ok-sign icon" ></span>
-                  <span className="dot"></span>
-                  <p className="smallText">pmt-2</p>
-
+                  </div>          
                   </div>
                   </div>
-                  <div data-toggle="modal" data-target="#myModal" className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
-                  id="div4" 
 
-                  draggable="true" onDragStart={(event)=>this.drag(event)}>
 
-                  <div className="fonts"><b>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</b>
-                  <p>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</p>
-
-                  <span className="glyphicon glyphicon-ok-sign icon" ></span>
-                  <span className="dot"></span>
-                  <p className="smallText">pmt-2</p>
-                  </div>
-                  </div>
-                  </div>
-                  </div>
                   <div className="column" id="div5" onDrop={(event)=>this.drop(event)} onDragOver={(event)=>this.allowDrop(event)}>
                   <div className="shadow">
                   <div className="shadow p-3 mb-3  text-black shadowText">
-                  <div>TESTING </div>  
-                  </div>
-
-                  <div data-toggle="modal" data-target="#myModal" className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
-                  id="div6" 
-                  draggable="true" onDragStart={(event)=>this.drag(event)}>
-
-                  <div className="fonts"><b>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</b>
-                  <p>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</p>
-
-                  <span className="glyphicon glyphicon-ok-sign icon" ></span>
-                  <span className="dot"></span>
-                  <p className="smallText">pmt-2</p>
-
-                  </div>
-                  </div>
-                  <div data-toggle="modal" data-target="#myModal" className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
-                  id="div7" 
-
-                  draggable="true" onDragStart={(event)=>this.drag(event)}>
-
-                  <div className="fonts"><b>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</b>
-                  <p>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</p>
-
-                  <span className="glyphicon glyphicon-ok-sign icon" ></span>
-                  <span className="dot"></span>
-                  <p className="smallText">pmt-2</p>
+                    <div>TESTING </div> 
+                  
 
                   </div>
                   </div>
                   </div>
-                  </div>
+
 
                   <div className="column" id="div8" onDrop={(event)=>this.drop(event)} onDragOver={(event)=>this.allowDrop(event)}>
                   <div className="shadow">
                   <div className="shadow p-3 mb-3   text-black shadowText">
-                  <div>DONE </div>  
-                  </div>
-                  <div data-toggle="modal" data-target="#myModal" className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
-                  id="div9" 
-
-                  draggable="true" onDragStart={(event)=>this.drag(event)}>
-
-                  <div className="fonts"><b>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</b>
-                  <p>Estimated Time should be an optional value which will be set after clicking a checkbox of ADD ESTIMATED TIME.</p>
-
-                  <span className="glyphicon glyphicon-ok-sign icon" ></span>
-                  <span className="dot"></span>
-                  <p className="smallText">pmt-2</p>
+                  <div>DONE </div> 
+                  
 
                   </div>
-                  </div>
-
                   </div>
                   </div>
 
 
-                  </div> 
                   <div className="modal " id="myModal">
-                  <div className="modal-dialog  modal-xl">
+                  <div className="modal-dialog ">
                   <div className="modal-content">
-
-
-                  <div className="modal-header">
+                  <div className="modal-header fixed-header">
                   <h4 className="modal-title">Modal title</h4>
                   <button type="button" className="close" data-dismiss="modal">&times;</button>
                   </div>
-
 
                   <div className="modal-body">
                   <div class="row">
@@ -276,12 +254,48 @@ export default class MainScreen extends  Component{
 
                   </div>
                   <div className="col-sm-2 edit">
-                  <button className="btn btn-default " onClick={() => this.openModal()}>Edit</button> 
+                  <button className="btn btn-default"  onClick={() => this.openModal()}>Edit</button> 
+
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                  <div className="modal-footer">
+
+                  <h1>Comments</h1>
+                  <h4>No comments on this be the first one to comments on...</h4>
+
+                  <div className="row">
+                  <CKEditor
+                  editor={ ClassicEditor }
+                  data="<p>Hello from Happy</p>"
+                  onInit={ editor => {
 
 
+                  } }
+                  onChange={ ( event, editor ) => {
+                        const data = editor.getData();
+
+                  } }
+                  onBlur={ editor => {
+
+                  } }
+                  onFocus={ editor => {
+
+                  } }
+                  />
+                  </div>
+                  <div className="row">
+                  <button className="btn btn-default uploadbtnModel">upload image with comment</button> 
+                  <button className="btn btn-default addcomment" >Add comment</button> 
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
                   <div className="container">
                   <Modal className="modelsecond" visible={this.state.visible}  effect="fadeInUp" onClickAway={() => this.closeModal()}>
-                 
+
                   <div className="editModel">
 
 
@@ -292,11 +306,11 @@ export default class MainScreen extends  Component{
 
                   </div>
                   <div className="row firstRowcontent">
-                  <h5>Title</h5>
-                  <TextField className="titleText" type="text" hintText="New Design " />
-
-                  <h5>Discription</h5>
-                  <TextField className="titleText" type="text" hintText="Task for Komal" />
+                  
+                  <TextField className="titleText" hintText="Title of task"
+                  floatingLabelText="Title"  />
+                  <TextField className="titleText" hintText="Task discription"
+                  floatingLabelText="Discription"  />
                   </div>
                   <a href="#" class="btn btnAddfiles btn-lg">
                   <span class="glyphicon glyphicon-paperclip"></span> Add Files 
@@ -323,6 +337,11 @@ export default class MainScreen extends  Component{
                   </div>  
                   </div>
 
+                  <TextField className="searchText days" hintText="1"
+                  floatingLabelText="Due Days"  type="number"/>
+
+
+
                   <div className="row statusDropdown">
                   <h4>Status</h4>
                   <select disabled value={this.state.value3} onChange={this.onChange3.bind(this)} className="form-control">
@@ -334,8 +353,8 @@ export default class MainScreen extends  Component{
                   </div>
 
                   <div className="modal-footer footer_right">
-                       <button className="btn btn-default" onClick={() => this.closeModal()}>close</button> 
-                        <button className="btn btn-default">save change</button>  
+                  <button className="btn btn-default" onClick={() => this.closeModal()}>close</button> 
+                  <button className="btn btn-default">save change</button>  
                   </div>
                   </div>
                   </Modal>
@@ -344,55 +363,28 @@ export default class MainScreen extends  Component{
 
 
 
-                  </div>
-                  </div>
-                  </div>
-                  </div>
-                  <div className="modal-footer">
 
-                  <h1>Comments</h1>
-                  <h4>No comments on this be the first one to comments on...</h4>
 
-                  <div className="row">
-                  <CKEditor
-                  editor={ ClassicEditor }
-                  data="<p>Hello from Happy</p>"
-                  onInit={ editor => {
 
-                        console.log( 'Editor is ready to use!', editor );
-                  } }
-                  onChange={ ( event, editor ) => {
-                        const data = editor.getData();
-                        console.log( { event, editor, data } );
-                  } }
-                  onBlur={ editor => {
-                        console.log( 'Blur.', editor );
-                  } }
-                  onFocus={ editor => {
-                        console.log( 'Focus.', editor );
-                  } }
-                  />
-                  </div>
-                  <div className="row">
-                  <button className="btn btn-default uploadbtnModel">upload image with comment</button> 
-                  <button className="btn btn-default addcomment" >Add comment</button> 
 
-                  </div>
-                 
 
-                  </div>
 
-                  </div>
-                  </div>
 
-                  </div>
+
+
+                  </div> 
+
 
                   </div>
 
                   </MuiThemeProvider>
                   </div>
 
-                  );
+                  )
+}
+</div>
+
+);
 
 }
 
