@@ -13,10 +13,12 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import FilterResults from 'react-filter-search';
 import Modal from 'react-awesome-modal';
+import { Link } from 'react-router-dom';
 
 
 
-
+let result1 = [];
+let p = "dsdfsdf"
 
 export default class MainScreen extends  Component{
       constructor(props) {
@@ -27,12 +29,22 @@ export default class MainScreen extends  Component{
             this.state = { value1: 'select'};
             this.state = { value2: 'select'};
             this.state = { value3: 'select'};
-            this.state = {   data: [] };
-            // this.state = { todo: '', 
-            //                progress: '',
-            //                test: '',
-            //                done :''
-            //               }
+            this.state = {    data:[],   
+                  todo:[],
+                  inprogress:[],
+                  testing :[],
+                  done :[], 
+                  titleModel: [],
+                  descModel:[],
+                  createbyModel:[],
+                  statusModel:[]
+                 
+                  
+
+            };
+
+
+
 
       }
       onChange(e) {
@@ -86,134 +98,83 @@ export default class MainScreen extends  Component{
             fetch('http://206.189.231.135:4000/tasks/all-task').
             then((Response)=>Response.json()).
             then((findresponse,err)=>
-            {
-                  console.log("hii",findresponse[2].status)
-                  // if(status=="to do"){
-                  //      {this.show()}
-                        
-                  // }
-                  // else if(status == "in prgress"){
-                  //       {this.progress()}
-                       
-                  // }
-                  // else if(status == "testing"){
-                  //       {this.testing()}
-                  // }
-                  // else{
-                  // }
-                       this.setState({
-                        data:findresponse,
-                  }) 
+            {      
+                  for(let i=0;i<findresponse.length;i++){
 
-                  
+                        this.setState(prevState =>({
+                              data: [...prevState.data, findresponse[i]]
+                        }))
+                        
+
+                        if(findresponse[i].status == "to do"){
+                              //console.log("name",findresponse[i].assignTo.name)
+                              this.setState(prevState =>({
+                                    todo: [...prevState.todo, findresponse[i]]
+                              }))
+
+
+                        }
+                        else if(findresponse[i].status == "in progress"){
+
+                              this.setState(prevState =>({
+                                    inprogress: [...prevState.inprogress, findresponse[i]]
+                              }))
+                        }
+                        else if(findresponse[i].status == "testing"){
+
+                              this.setState(prevState =>({
+                                    testing: [...prevState.testing, findresponse[i]]
+                              }))
+                        }
+                        else{
+                              this.setState(prevState =>({
+                                    done: [...prevState.done, findresponse[i]]
+                              }))
+                        }
+                  }
+
             })
 
       }
-      show(){
-            return(
-               
-
-                  this.state.data.map((dynamcData,key)=>
-
-            // if(dynamcData.status=="to do"){
-            //       {this.show()}
-            // }
-            // else if(dynamcData.status=="in progress"){
-            //       {this.show()}
-            // }
-            // else{
-            //       {
-            //            this.show();
-            //       }
-            // }
-                        <div data-toggle="modal" data-target="#myModal" className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
-                        id={dynamcData._id}
-                        draggable="true" onDragStart={(event)=>this.drag(event)}> 
 
 
-                        <div className="fonts">
-                        <b>{dynamcData.title}</b>
-                        <p>{dynamcData.desc}</p>
-                        <span className="glyphicon glyphicon-ok-sign icon"></span>
-                        <span className="dot"></span>
-                        <p className="smallText">pmt-2</p>
-                        <p>{dynamcData.status}</p>
-                        <p>{dynamcData._id}</p>
-
-                        </div>
-                        </div>
-                        )
-                  )
+      getInitialsOfName(name){
+            var str = name.split(' ')[0][0]+name.split(' ')[1][0];
+            return str.toUpperCase();
 
       }
-    
-
-      render() {
-
-            return (
-
-                  <div>
-
-                  <div className="body">
-                  <MuiThemeProvider>
-                  <div className="container">
-
-                  <div className="row ">
-
-                  <TextField className="searchText" hintText="Search text goes hear"
-                  floatingLabelText="Search"  />
-
-                  </div>
-
-                  <div className="row">
 
 
-                  <div className="column" id="div11" 
-                  onDrop={(event)=>this.drop(event)} 
-                  onDragOver={(event)=>this.allowDrop(event)}> 
-                  <div className="shadow">
-                  <div className="shadow p-3 mb-3 text-black shadowText">
-                  <div>TODO </div>  
-                  </div>
-                  {this.show()}
-                  </div>
-                  </div>
 
+      
 
-                  <div className="column" id="div2" onDrop={(event)=>this.drop(event)} onDragOver={(event)=>this.allowDrop(event)}>
-                  <div className="shadow">
-                  <div className="shadow p-3 mb-3   text-black shadowText">
-                    <div>IN PROGRESS </div>  
-                  
+      model(id){
+            let id1 =id;
 
-                  </div>          
-                  </div>
-                  </div>
+            for(let i=0;i < this.state.data.length;i++)
+            {       
 
+                  if(this.state.data[i]._id == id1){
+                      
+                        var result = this.state.data.filter(obj => {
+                              return obj._id===id1
 
-                  <div className="column" id="div5" onDrop={(event)=>this.drop(event)} onDragOver={(event)=>this.allowDrop(event)}>
-                  <div className="shadow">
-                  <div className="shadow p-3 mb-3  text-black shadowText">
-                    <div>TESTING </div> 
-                  
+                        })
+                        result1 = result;
+                        this.setState({titleModel: result1[0].title});
+                         this.setState({descModel: result1[0].desc});
+                         this.setState({createbyModel: result1[0].assignTo.name});
+                          this.setState({statusModel: result1[0].status});
 
-                  </div>
-                  </div>
-                  </div>
+                  }
+                       
+            }
+           
+            
+            return(
 
+                  <div className="modal" id="myModal">
 
-                  <div className="column" id="div8" onDrop={(event)=>this.drop(event)} onDragOver={(event)=>this.allowDrop(event)}>
-                  <div className="shadow">
-                  <div className="shadow p-3 mb-3   text-black shadowText">
-                  <div>DONE </div> 
-                  
-
-                  </div>
-                  </div>
-                  </div>
-
-
-                  <div className="modal " id="myModal">
                   <div className="modal-dialog ">
                   <div className="modal-content">
                   <div className="modal-header fixed-header">
@@ -222,20 +183,20 @@ export default class MainScreen extends  Component{
                   </div>
 
                   <div className="modal-body">
-                  <div class="row">
+                    <div class="row">
                   <span className="dot"></span>
-                  <span className="donContent"><b>Time must be shown for each task/bug/issue</b></span>
+                  <span className="donContent"><b>{this.state.titleModel}</b></span>
                   </div>
+                  
+
                   <div className="row">
-                  <p className="task">There must be no refresh. 
-                  As soon as the response from the request of update status of task is received as successful, the required changes shall be done locally on the object and the server response should not be rendered as a whole.
-                  </p>
+                  <p className="task">{this.state.descModel}</p>
                   </div>
                   <div className="row box">
                   <div className="col-12 col-md-4">
-                  <p><b>Created By:</b> Thirthraj Barot</p>
+                  <p><b>Created By:</b>{this.state.createbyModel} </p>
                   <p><b>Created Date:</b> 8/3/2019, 10:00 AM</p>
-                  <p><b>Status:</b> in progress</p>
+                  <p><b>Status:</b>{this.state.statusModel} </p>
                   </div>
                   <div className="col-12 col-md-4">
                   <p><b>Assign To:</b> Mehul Bhatt</p>
@@ -293,6 +254,179 @@ export default class MainScreen extends  Component{
                   </div>
                   </div>
                   </div>
+                  )
+      }
+
+
+
+
+      render() {
+            return (
+                  <div>
+                  {this.model()}
+                  <div className="body">
+                  <MuiThemeProvider>
+                  <div className="container">
+                  <div className="row leave">
+
+                  <Link to="/leave">Leave Form</Link>
+
+                  </div>
+
+                  <div className="row ">
+
+                  <TextField className="searchText" hintText="Search text goes hear"
+                  floatingLabelText="Search"/>
+
+                  </div>
+                  <div className="row">
+
+                  <div className="column" id="div11" 
+                  onDrop={(event)=>this.drop(event)} 
+                  onDragOver={(event)=>this.allowDrop(event)}> 
+                  <div className="shadow">
+                  <div className="shadow p-3 mb-3 text-black shadowText">
+                  <div>TODO </div>  
+                  </div>
+                  {
+                        this.state.todo.map((todoData,key)=>
+
+                              <div data-toggle="modal" data-target="#myModal" onClick={()=>this.model(todoData._id)}  className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
+                              id={todoData._id}
+                              draggable="true" onDragStart={(event)=>this.drag(event)}> 
+                              <div className="fonts">
+                              <b>{todoData.title}</b>
+                              <p>{todoData.desc}</p>
+                              <div className="row icons">
+                              <span className="glyphicon glyphicon-ok-sign icon"></span>
+                              <span className="dot"><b>{this.getInitialsOfName(todoData.assignTo.name)}</b></span>
+                              </div>
+                              <div className="row">
+                              <p className="smallText">{todoData.uniqueId}</p>
+
+                              <p className="name">{todoData.assignTo.name}</p>
+                              </div>
+                              </div>
+                              </div>
+
+                              )  
+                  }
+                  </div>
+                  </div>
+
+
+                  <div className="column" id="div2" onDrop={(event)=>this.drop(event)} onDragOver={(event)=>this.allowDrop(event)}>
+                  <div className="shadow">
+                  <div className="shadow p-3 mb-3   text-black shadowText">
+                  <div>IN PROGRESS </div>  
+                  </div>  
+                  {
+
+                        this.state.inprogress.map((progressData,key)=>
+                              <div data-toggle="modal" data-target="#myModal" onClick={()=>this.model(progressData._id)}  className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
+                              id={progressData._id}
+                              draggable="true" onDragStart={(event)=>this.drag(event)}> 
+
+                              <div className="fonts">
+                              <b>{progressData.title}</b>
+                              <p>{progressData.desc}</p>
+                              <div className="row icons">
+                              <span className="glyphicon glyphicon-ok-sign icon"></span>
+                              <span className="dot">{this.getInitialsOfName(progressData.assignTo.name)}</span>
+                              </div>
+                              <div className="row">
+                              <p className="smallText">{progressData.uniqueId}</p>
+
+                              <p className="name">{progressData.assignTo.name}</p>
+                              </div>
+
+
+                              </div>
+                              </div>
+
+                              )
+                  }
+
+                  </div>
+                  </div>
+
+
+                  <div className="column" id="div5" onDrop={(event)=>this.drop(event)} onDragOver={(event)=>this.allowDrop(event)}>
+                  <div className="shadow">
+                  <div className="shadow p-3 mb-3  text-black shadowText">
+                  <div>TESTING </div>
+                  </div> 
+                  {
+                        this.state.testing.map((testingData,key)=>
+
+                              <div data-toggle="modal" data-target="#myModal" onClick={()=>this.model(testingData._id)}  className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
+                              id={testingData._id}
+                              draggable="true" onDragStart={(event)=>this.drag(event)}> 
+
+                              <div className="fonts">
+                              <b>{testingData.title}</b>
+                              <p>{testingData.desc}</p>
+                              <div className="row icons">
+                              <span className="glyphicon glyphicon-ok-sign icon"></span>
+                              <span className="dot">{this.getInitialsOfName(testingData.assignTo.name)}</span>
+                              </div>
+                              <div className="row">
+                              <p className="smallText">{testingData.uniqueId}</p>
+
+                              <p className="name">{testingData.assignTo.name}</p>
+                              </div>
+
+
+                              </div>
+                              </div>
+
+                              )
+                  }
+
+                  </div>
+                  </div>
+
+
+                  <div className="column" id="div8" onDrop={(event)=>this.drop(event)} onDragOver={(event)=>this.allowDrop(event)}>
+                  <div className="shadow">
+                  <div className="shadow p-3 mb-3   text-black shadowText">
+                  <div>DONE </div>  
+                  </div> 
+                  {
+
+                        this.state.done.map((doneData,key)=>
+
+                              <div data-toggle="modal" data-target="#myModal" onClick={()=>this.model(doneData._id)}  className="text-black shadow p-3 mb-3 bg-white  shadowDesc" 
+                              id={doneData._id}
+                              draggable="true" onDragStart={(event)=>this.drag(event)}> 
+
+                              <div className="fonts">
+                              <b>{doneData.title}</b>
+                              <p>{doneData.desc}</p>
+                              <div className="row icons">
+                              <span className="glyphicon glyphicon-ok-sign icon"></span>
+
+                              <span className="dot">{this.getInitialsOfName(doneData.assignTo.name)}</span>
+                              </div>
+                              <div className="row username">
+                              <p className="smallText">{doneData.uniqueId}</p>
+
+                              <p className="name">{doneData.assignTo.name}</p>
+                              </div>
+
+
+
+                              </div>
+                              </div>
+
+                              )
+                  }
+
+                  </div>
+                  </div>
+
+
+
                   <div className="container">
                   <Modal className="modelsecond" visible={this.state.visible}  effect="fadeInUp" onClickAway={() => this.closeModal()}>
 
@@ -306,9 +440,9 @@ export default class MainScreen extends  Component{
 
                   </div>
                   <div className="row firstRowcontent">
-                  
+
                   <TextField className="titleText" hintText="Title of task"
-                  floatingLabelText="Title"  />
+                  floatingLabelText="Title"/>
                   <TextField className="titleText" hintText="Task discription"
                   floatingLabelText="Discription"  />
                   </div>

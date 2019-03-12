@@ -45,6 +45,7 @@
 }
 .shadowDesc{
 	border-left: 2px solid orange;
+
 }
 .shadowText{
 	background-color: #f4f5f7!important;
@@ -66,9 +67,30 @@
 	background-color: purple;
 	border-radius: 50%;
 	display: inline-block;
+	color: white;
+	font-size: 10px;
+	text-align: center;
+
+	 text-transform: uppercase;
+	 text-decoration: none;
+    cursor: pointer;
+
+
+}
+.username{
+	margin-top: 5px !important;
+}
+.icons{
+	margin-left: 5px !important;
 }
 .smallText{
-	font-size: 10px;
+	font-size: 13px;
+    margin-left: 18px !important;
+}
+.name{
+	font-size: 13px;
+	 margin-left: 80px; 
+	
 }
 .row:after {
 	content: "";
@@ -82,7 +104,9 @@
 	float: right;
 	width: 80% !important;
 	max-width: 80% !important;
+
 }
+
 .modal-title{
 	font-weight: 300;
 	margin-bottom: 0;
@@ -91,13 +115,14 @@
 	text-align: center;
 }
 .modal-header .close {
-	padding: 1rem 1rem;
+	padding: 1rem ;
 	margin: -1rem -1rem -1rem auto;
 	font-size: 36px;
 }
 .donContent {
     margin: 0px 7px 3px 14px;
     font-size: 17px;
+
 }
 .task{
 	margin: 30px;
@@ -224,4 +249,27 @@ p{
 .fixed-header{
 	top: 0; 
 
+}
+.leave{
+	float: right;
+	margin-top: 20px !important;
+	font-size: 20px;
+
+}
+------------------------------------------------------------
+
+.cardLeave{
+	width: 700px;
+    margin: 0px auto 0px auto;
+    max-width: 100%;
+}
+.cardTitleLeave{
+	
+   background-color: #4b415a;
+   color: white;
+   text-align: center;
+   font-size: 30px;
+   box-sizing: border-box;
+  font-weight: bolder; 
+  padding: 25px;
 }
