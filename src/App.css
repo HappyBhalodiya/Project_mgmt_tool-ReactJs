@@ -43,10 +43,7 @@
 .card{
 	background-color: #f4f5f7!important;
 }
-.shadowDesc{
-	border-left: 2px solid orange;
 
-}
 .shadowText{
 	background-color: #f4f5f7!important;
 
@@ -107,6 +104,7 @@
 
 }
 
+
 .modal-title{
 	font-weight: 300;
 	margin-bottom: 0;
@@ -153,7 +151,7 @@
 	 background: #372e5f !important;
 }
 .edit{
-	float: right;
+	margin-left: 20px !important;;
 }
 .buttonRow{
 	width: 100% !important;
@@ -164,7 +162,7 @@
 	display: block !important;
 	text-align: left !important;
 	margin-left: 20px !important;
-    margin-bottom: 24px !important;
+   
 }
 .ck.ck-reset.ck-editor.ck-rounded-corners {
     width: 100% !important;
@@ -183,12 +181,15 @@
 .closeEdit{
 	font-size: 30px;
 }
+
 .editModel{
 	padding: 15px;
 	display: inline-block;
-    height: auto;
+    
     width: 800px;
     max-width: 100%;
+    max-height: calc(200vh - 400px) !important; 
+    overflow-y: auto;
 }
 .firstRowcontent{
 	padding: 24px;
@@ -241,10 +242,13 @@ p{
 	text-align: justify;
 }
 .days{
-	margin-top: 15px !important ;
+	/*margin-top: 15px !important ;*/
 	margin-left: 5px !important;
 	margin-right: 5px !important;
 
+}
+.duedays label{
+	margin-top: 20px !important;
 }
 .fixed-header{
 	top: 0; 
@@ -255,6 +259,19 @@ p{
 	margin-top: 20px !important;
 	font-size: 20px;
 
+}
+.titleCard{
+	color: #5e6c84;
+    
+    line-height: 1.33333333;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-left: 15px !important;
+}
+.cardcount{
+	color: black;
+	 font-weight: 400;
+	 margin-left: 15px !important;
 }
 ------------------------------------------------------------
 
@@ -273,3 +290,7 @@ p{
   font-weight: bolder; 
   padding: 25px;
 }
+
+/*.border1111{
+	border-left: 1px solid red;
+}*/
