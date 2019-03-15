@@ -50,7 +50,8 @@ export default class MainScreen extends  Component{
                            items: []  ,  
                            searchText:'',
                            updatedList1:[],
-                            rowData:[]
+                            rowData:[],
+                            finaldata:[]
                            
                  
             };
@@ -61,51 +62,55 @@ export default class MainScreen extends  Component{
            
             console.log("event.target = ", event.target.value);
             this.state.searchText = event.target.value;
-            for(let i=0 ; i < this.state.data.length ; i++) 
-                  updatedList.push(this.state.data[i].title);
+            for(let i=0 ; i < this.state.finaldata.length ; i++) 
+                  updatedList.push(this.state.finaldata[i]);
             console.log("UpdatedList = ",updatedList);
-            let updatedList1 = updatedList.filter(item => {
-                  return item.toLowerCase().indexOf(
-                       this.state.searchText.toLowerCase()) !== -1;
-            });
-            console.log("Output array = ",updatedList1);
-         //  this.state.rowData=updatedList1;
-           
-          
-            this.setState({items: updatedList1});
+            this.state.data = updatedList.filter(item => {
+                  return item.title.toLowerCase().indexOf(
+                       this.state.searchText.toLowerCase()) !== -1 || 
+                    item.assignTo.name.toLowerCase().indexOf(
+                       this.state.searchText.toLowerCase()) !== -1 ||
+                    item.desc.toLowerCase().indexOf(
+                       this.state.searchText.toLowerCase()) !== -1 ||
+                    item.uniqueId.toLowerCase().indexOf(
+                       this.state.searchText.toLowerCase()) !== -1
 
-            if(this.state.searchText==''){
-                  this.state.searchText= this.state.data;
-            }
-            else{
-                  this.state.searchText=this.doProcess()
-            }
+            });
+            console.log("Output array = ",this.state.data);
+            {this.doProcess(this.state.data)}
+       
+            //this.setState({items: this.state.data});
+
+        
       }
       doProcess(data){
-            
-             for(let i=0;i< this.state.data.length; i++){
-          // console.log("row====",this.state.data[i].status);
-              if(this.state.data[i].status == "to do"){
+            this.state.todo=this.state.inprogress=this.state.testing=this.state.done=[]
 
+             for(let i=0;i< data.length; i++){
+      
+              if(data[i].status == "to do"){
+                    console.log("todo call");
                         this.setState(prevState =>({
-                              todo: [...prevState.todo, this.state.data[i]]
+                              todo: [...prevState.todo, data[i]]
+                      
                         }))
                   }
-                  else if(this.state.data[i].status == "in progress"){
-
+                  else if(data[i].status == "in progress"){
+                        console.log("inprogress call");
                         this.setState(prevState =>({
-                              inprogress: [...prevState.inprogress, this.state.data[i]]
+                              inprogress: [...prevState.inprogress, data[i]]
                         }))
                   }
-                  else if(this.state.data[i].status == "testing"){
-
+                  else if(data[i].status == "testing"){
+                        console.log("testing call");
                         this.setState(prevState =>({
-                              testing: [...prevState.testing, this.state.data[i]]
+                              testing: [...prevState.testing, data[i]]
                         }))
                   }
                   else{
+                        console.log("done call");
                         this.setState(prevState =>({
-                              done: [...prevState.done, this.state.data[i]]
+                              done: [...prevState.done, data[i]]
                         }))
                   }
              }
@@ -160,6 +165,9 @@ export default class MainScreen extends  Component{
             else if(data.priority==2){
                   return priority1='3px solid red';    
             }
+            else if(data.priority==1){
+                  return priority1='3px solid blue'
+            }
             else {
                   return priority1='3px solid blue';
             }
@@ -174,6 +182,10 @@ export default class MainScreen extends  Component{
 
                         this.setState(prevState =>({
                               data: [...prevState.data, findresponse[i]]
+                        }))
+
+                         this.setState(prevState =>({
+                              finaldata: [...prevState.data, findresponse[i]]
                         }))
 
                         if(findresponse[i].status == "to do"){
@@ -209,6 +221,8 @@ export default class MainScreen extends  Component{
             return str.toUpperCase();
 
       }
+  
+
       onTimeChange(options) {
 
       }
@@ -220,12 +234,12 @@ export default class MainScreen extends  Component{
       model(id){
             let id1 =id;
 
-            for(let i=0;i < this.state.data.length;i++)
+            for(let i=0;i < this.state.finaldata.length;i++)
             {       
 
-                  if(this.state.data[i]._id == id1){
+                  if(this.state.finaldata[i]._id == id1){
 
-                        var result = this.state.data.filter(obj => {
+                        var result = this.state.finaldata.filter(obj => {
                               return obj._id===id1
 
                         })
@@ -246,26 +260,25 @@ export default class MainScreen extends  Component{
                               cardborder1=cardborder
                               console.log(cardborder1);
 
-                        }
-                        else if(result1[0].priority==3){
+                        }else if(result1[0].priority==3){
                               var cardborder=  result1[0].priority="Medium";
                               this.setState({prorityModel: result1[0].priority});
                               cardborder1=cardborder
                               console.log(cardborder1);
-                        }
-                        else if(result1[0].priority==2){
+
+                        }else if(result1[0].priority==2){
                               var cardborder=  result1[0].priority="Highest";
                               this.setState({prorityModel: result1[0].priority});
                               cardborder1=cardborder
                               console.log(cardborder1);
-                        }
-                        else if(result1[0].priority==1){
+
+                        }else if(result1[0].priority==1){
                               var cardborder=  result1[0].priority="low";
                               this.setState({prorityModel: result1[0].priority});
                               cardborder1=cardborder
                               console.log(cardborder1);
-                        }
-                        else{
+
+                        }else{
                               var cardborder=  result1.priority="low";
                               this.setState({prorityModel: result1[0].priority});
                               cardborder1=cardborder
